@@ -36,10 +36,9 @@ data = {
 def test_datetime_attributes(
     request: Any, constructor: Any, attribute: str, expected: list[int]
 ) -> None:
-    if (
-        attribute == "date"
-        and "pandas" in str(constructor)
-        and "pyarrow" not in str(constructor)
+    if attribute == "date" and (
+        ("pandas" in str(constructor) and "pyarrow" not in str(constructor))
+        or "cudf" in str(constructor)
     ):
         request.applymarker(pytest.mark.xfail)
 
