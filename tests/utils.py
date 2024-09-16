@@ -46,6 +46,8 @@ def compare_dicts(result: Any, expected: dict[str, Any]) -> None:
             elif pd.isna(lhs):
                 assert pd.isna(rhs), (lhs, rhs)
             else:
+                print(type(lhs))  # noqa: T201
+                print(type(rhs))  # noqa: T201
                 assert lhs == rhs, (lhs, rhs)
 
 
