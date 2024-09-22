@@ -870,7 +870,6 @@ class PandasLikeSeriesDateTimeNamespace:
                 + self._pandas_series._native_series.dt.microseconds / 1e6
             )
 
-        s = self._pandas_series._native_series.dt.total_seconds()
         s_sign = (
             2 * (s > 0).astype(int_dtype_mapper(s.dtype)) - 1
         )  # this calculates the sign of each series element
