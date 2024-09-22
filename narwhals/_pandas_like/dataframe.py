@@ -474,6 +474,16 @@ class PandasLikeDataFrame:
                 )
 
         if how == "anti":
+            if self._implementation is Implementation.CUDF:
+                return self._from_native_frame(
+                    self._native_frame.merge(
+                        other,
+                        how="leftanti",
+                        left_on=left_on,
+                        right_on=left_on,
+                    )
+                )
+
             indicator_token = generate_unique_token(
                 n_bytes=8, columns=[*self.columns, *other.columns]
             )
