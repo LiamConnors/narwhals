@@ -475,9 +475,16 @@ class PandasLikeDataFrame:
 
         if how == "anti":
             if self._implementation is Implementation.CUDF:
+                other_native = (
+                    other._native_frame.loc[:, right_on]
+                    .rename(  # rename to avoid creating extra columns in join
+                        columns=dict(zip(right_on, left_on))  # type: ignore[arg-type]
+                    )
+                    .drop_duplicates()
+                )
                 return self._from_native_frame(
                     self._native_frame.merge(
-                        other,
+                        other_native,
                         how="leftanti",
                         left_on=left_on,
                         right_on=left_on,
