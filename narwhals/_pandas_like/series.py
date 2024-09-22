@@ -861,6 +861,15 @@ class PandasLikeSeriesDateTimeNamespace:
         return self._pandas_series._from_native_series(s_abs * s_sign)
 
     def total_seconds(self) -> PandasLikeSeries:
+        if hasattr(self._pandas_series._native_series.dt, "total_seconds"):
+            s = self._pandas_series._native_series.dt.total_seconds()
+        else:
+            s = (
+                self._pandas_series._native_series.dt.days * 86400
+                + self._pandas_series._native_series.dt.seconds
+                + self._pandas_series._native_series.dt.microseconds / 1e6
+            )
+
         s = self._pandas_series._native_series.dt.total_seconds()
         s_sign = (
             2 * (s > 0).astype(int_dtype_mapper(s.dtype)) - 1
