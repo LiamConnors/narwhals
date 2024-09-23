@@ -209,6 +209,10 @@ def agg_pandas(  # noqa: PLR0915
             result_aggs = result_simple_aggs
         else:
             # No aggregation provided
+            print("----")  # noqa: T201
+            print(grouped.groups.keys())  # noqa: T201
+            print("----")  # noqa: T201
+            print(keys)  # noqa: T201
             result_aggs = native_namespace.DataFrame(grouped.groups.keys(), columns=keys)
         return from_dataframe(result_aggs.loc[:, output_names])
 
