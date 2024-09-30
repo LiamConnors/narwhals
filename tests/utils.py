@@ -10,6 +10,7 @@ from typing import Sequence
 
 import pandas as pd
 
+import narwhals as nw
 from narwhals.typing import IntoFrame
 
 if sys.version_info >= (3, 10):
@@ -34,7 +35,10 @@ def compare_dicts(result: Any, expected: dict[str, Any]) -> None:
         for key in result.columns:
             assert key in expected
     for key in expected:
-        for lhs, rhs in zip_strict(result[key], expected[key]):
+        result_key = result[key]
+        if nw.dependencies.is_cudf_series(result_key):
+            result_key = result_key.to_pandas()
+        for lhs, rhs in zip_strict(result_key, expected[key]):
             if hasattr(lhs, "as_py"):
                 lhs = lhs.as_py()  # noqa: PLW2901
             if hasattr(rhs, "as_py"):  # pragma: no cover
