@@ -35,6 +35,7 @@ def compare_dicts(result: Any, expected: dict[str, Any]) -> None:
             assert key in expected
     for key in expected:
         result_key = result[key]
+        print(str(result_key._compliant_series))  # noqa: T201
         if "cudf" in str(result_key._compliant_series):
             result_key = result_key.to_pandas()
         for lhs, rhs in zip_strict(result_key, expected[key]):
