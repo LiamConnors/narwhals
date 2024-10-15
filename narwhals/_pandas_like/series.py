@@ -868,15 +868,15 @@ class PandasLikeSeriesDateTimeNamespace:
         )
 
     def _get_total_seconds(self) -> Any:
-        s = self._pandas_series._native_series
-        if hasattr(s.dt, "total_seconds"):
-            return s.dt.total_seconds()
-        return (
-            s.dt.days * 86400
-            + s.dt.seconds
-            + (s.dt.microseconds / 1e6)
-            + (s.dt.nanoseconds / 1e9)
-        )
+        if hasattr(self._pandas_series._native_series.dt, "total_seconds"):
+            return self._pandas_series._native_series.dt.total_seconds()
+        else:
+            return (
+                self._pandas_series._native_series.dt.days * 86400
+                + self._pandas_series._native_series.dt.seconds
+                + (self._pandas_series._native_series.dt.microseconds / 1e6)
+                + (self._pandas_series._native_series.dt.nanoseconds / 1e9)
+            )
 
     def total_minutes(self) -> PandasLikeSeries:
         s = self._get_total_seconds()
